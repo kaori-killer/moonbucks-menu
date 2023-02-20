@@ -7,17 +7,15 @@
 //   - [ ] 메뉴가 추가되고 나면, input은 빈 값으로 초기화한다.
 //   - [ ] 사용자 입력값이 빈 값이라면 추가되지 않는다.
 
+const $ = (selector) => document.querySelector(selector);
+
 function App() {
     // form 태그가 자동으로 전송되는걸 막아준다.
-    document
-        .querySelector("#espresso-menu-form")
-        .addEventListener("submit", (e)=>{
+    $("#espresso-menu-form").addEventListener("submit", (e)=>{
             e.preventDefault();
     });
 
-    document
-        .querySelector("#espresso-menu-name")
-        .addEventListener("keypress", (e)=>{
+    $("#espresso-menu-name").addEventListener("keypress", (e)=>{
         if(e.key === "Enter") {
             console.log(document.querySelector("#espresso-menu-name").value);
         }
