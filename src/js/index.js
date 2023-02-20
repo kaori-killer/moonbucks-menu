@@ -36,15 +36,6 @@ function App() {
             삭제
             </button>
         </li>`};
-        /* 
-        <!-- beforebegin -->
-            <ul>
-        <!-- afterbegin -->
-            <li></li>
-        <!-- beforeend -->
-            </ul>
-        <!-- afterend -->
-        */
         $("#espresso-menu-list").insertAdjacentHTML(
             "beforeend",
             menuItemTemplate(espressMenuName)
