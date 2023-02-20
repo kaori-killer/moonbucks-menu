@@ -5,7 +5,7 @@
 // - [x] 추가되는 메뉴의 아래 마크업은 `<ul id="espresso-menu-list" class="mt-3 pl-0"></ul>` 안에 삽입해야 한다.
 // - [x] 총 메뉴 갯수를 count하여 상단에 보여준다.
 // - [x] 메뉴가 추가되고 나면, input은 빈 값으로 초기화한다.
-// - [ ] 사용자 입력값이 빈 값이라면 추가되지 않는다.
+// - [x] 사용자 입력값이 빈 값이라면 추가되지 않는다.
 
 const $ = (selector) => document.querySelector(selector);
 
@@ -19,6 +19,11 @@ function App() {
     $("#espresso-menu-name").addEventListener("keypress", (e)=>{
         if(e.key === "Enter") {
             const espressMenuName = $("#espresso-menu-name").value;
+            if($("#espresso-menu-name").value === "") { 
+                alert("값을 입력해주세요");
+                return;
+            }
+
             const menuItemTemplate = (espressMenuName) => { return `<li class="menu-list-item d-flex items-center py-2">
                 <span class="w-100 pl-2 menu-name">${espressMenuName}</span>
                 <button
