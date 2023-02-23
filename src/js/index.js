@@ -2,6 +2,9 @@
 
 // TODO localStorage Read & Write
 // - [] localStorage에 데이터를 저장한다.
+//  - [x] 메뉴를 추가할 때
+//  - [] 메뉴를 수정할 때
+//  - [] 메뉴를 삭제할 때
 // - [] localStorage에 있는 데이터를 읽어온다.
 
 // TODO 카테고리별 메뉴판 관리
@@ -22,7 +25,19 @@
 
 const $ = (selector) => document.querySelector(selector);
 
+const store = {
+    setLocalStorage(menu) {
+        localStorage.setItem("menu", JSON.stringify(menu));
+    },
+    getLocalStorage() {
+        localStorage.getItem("menu");
+    },
+}
+
 function App() {
+    // 상태[변하는 데이터, 이 앱에서 변하는 것이 무엇인가] - 메뉴명(->개수)
+    let menu = [];
+
     const countMenu = () => {
         const menuCount = $("#espresso-menu-list").querySelectorAll("li").length;
         $(".menu-count").innerText = `총 ${menuCount}개`
@@ -34,25 +49,30 @@ function App() {
             return;
         }
         const espressMenuName = $("#espresso-menu-name").value;
-        const menuItemTemplate = (espressMenuName) => { return `<li class="menu-list-item d-flex items-center py-2">
-            <span class="w-100 pl-2 menu-name">${espressMenuName}</span>
-            <button
-            type="button"
-            class="bg-gray-50 text-gray-500 text-sm mr-1 menu-edit-button"
-            >
-            수정
-            </button>
-            <button
-            type="button"
-            class="bg-gray-50 text-gray-500 text-sm menu-remove-button"
-            >
-            삭제
-            </button>
-        </li>`};
-        $("#espresso-menu-list").insertAdjacentHTML(
-            "beforeend",
-            menuItemTemplate(espressMenuName)
-        );
+        menu.push({ name: espressMenuName });
+        store.setLocalStorage(menu);
+        const template = menu
+            .map((item) => {
+                return ( 
+                        `<li class="menu-list-item d-flex items-center py-2">
+                        <span class="w-100 pl-2 menu-name">${item.name}</span>
+                        <button
+                        type="button"
+                        class="bg-gray-50 text-gray-500 text-sm mr-1 menu-edit-button"
+                        >
+                        수정
+                        </button>
+                        <button
+                        type="button"
+                        class="bg-gray-50 text-gray-500 text-sm menu-remove-button"
+                        >
+                        삭제
+                        </button>
+                    </li>` 
+                );
+            })
+            .join("");
+        $("#espresso-menu-list").innerHTML = template;
         countMenu();
         $("#espresso-menu-name").value = "";
     }
@@ -83,7 +103,7 @@ function App() {
             e.preventDefault();
     });
 
-    $("#espresso-menu-submit-button").addEventListener("click", addMenuName());
+    $("#espresso-menu-submit-button").addEventListener("click", addMenuName);
 
     $("#espresso-menu-name").addEventListener("keypress", (e)=>{
         if(e.key !== "Enter") { 
