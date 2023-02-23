@@ -107,7 +107,7 @@ function App() {
         const newMenuName = prompt("메뉴명을 수정하세요",  $menuName.innerText);
         this.menu[this.currentCategory][menuId].name = newMenuName;
         store.setLocalStorage(this.menu);
-        $menuName.innerText = newMenuName;
+        render();
     }
 
     const removeMenuName = (e) => {
