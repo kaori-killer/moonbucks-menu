@@ -1,3 +1,6 @@
+// 회고
+// 
+
 // step2 요구사항 구현을 위한 전략
 
 // TODO localStorage Read & Write
@@ -22,20 +25,10 @@
 // - [x] 품절 버튼을 추가한다.
 // - [x] 품절 버튼을 눌렀을 때, localStorage에 품절 값을 추가한다.
 // -[x] 품절 버튼을 눌렀을 때, sold-out class를 추가하여 상태를 변경한다.
-
-const $ = (selector) => document.querySelector(selector);
-
-const store = {
-    setLocalStorage(menu) {
-        localStorage.setItem("menu", JSON.stringify(menu));
-    },
-    getLocalStorage() {
-        return JSON.parse(localStorage.getItem("menu"));
-    },
-}
+import { $ } from "./utils.js/dom.js";
+import { store } from "./store/index.js"
 
 function App() {
-    // 상태[변하는 데이터, 이 앱에서 변하는 것이 무엇인가] - 메뉴명(->개수)
     this.menu = {
         espresso: [],
         frappuccino: [],
