@@ -81,10 +81,11 @@ function App() {
         .join("");
 
         $("#menu-list").innerHTML = template;
+        countMenu();
     }
 
     const countMenu = () => {
-        const menuCount = $("#menu-list").querySelectorAll("li").length;
+        const menuCount = this.menu[this.currentCategory].length;
         $(".menu-count").innerText = `총 ${menuCount}개`
     }
 
@@ -114,9 +115,8 @@ function App() {
         if(confirm("정말 삭제하시겠습니까?")){
             const menuId = e.target.closest("li").dataset.menuId;
             this.menu[this.currentCategory].splice(menuId, 1);
-            e.target.closest("li").remove();
             store.setLocalStorage(this.menu);
-            countMenu();
+            render();
         }
     }
 
