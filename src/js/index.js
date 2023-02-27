@@ -1,7 +1,8 @@
 // 회고
-// 
+// '상태값'의 중요성
+// 각 인스턴스 별로 서로 다른 상태를 가지고 있는데 이는 this가 있어야 알 수 있다.
 
-// step2 요구사항 구현을 위한 전략
+// step2 요구사항 구현을 위한 전략 
 
 // TODO localStorage Read & Write
 // - [x] localStorage에 데이터를 저장한다.
@@ -25,8 +26,25 @@
 // - [x] 품절 버튼을 추가한다.
 // - [x] 품절 버튼을 눌렀을 때, localStorage에 품절 값을 추가한다.
 // -[x] 품절 버튼을 눌렀을 때, sold-out class를 추가하여 상태를 변경한다.
+
+// TODO 서버 요청 부분
+// - [x] 웹 서버를 띄운다.
+// - [ ] 서버에 새로운 메뉴가 추가될 수 있게 요청한다.
+// - [ ] 중복되는 메뉴가 추가되지 않게 한다.
+// - [ ] 카테고리별 메뉴 리스트 불러온다.
+// - [ ] 서버에 메뉴가 수정하기 될 수 있게 요청한다.
+// - [ ] 서버에 메뉴의 품절 상태가 토글될 수 있게 요청한다.
+// - [ ] 서버에 메뉴가 삭제될 수 있도록 요청한다.
+
+// 리펙터링 부분
+// - [ ] localStorage에 저장하는 로직은 지운다.
+// - [ ] fetch 비동기 api를 사용하는 부분을 async await을 사용하여 구현한다.
+//   - [ ] API 통신이 실패하는 경우에 대해 사용자가 알 수 있게 [alert](https://developer.mozilla.org/ko/docs/Web/API/Window/alert)으로 예외처리를 진행한다.
+
 import { $ } from "./utils.js/dom.js";
-import { store } from "./store/index.js"
+import { store } from "./store/index.js";
+
+const BASE_URL = "http://localhost:3000/api/";
 
 function App() {
     this.menu = {
@@ -75,7 +93,7 @@ function App() {
 
         $("#menu-list").innerHTML = template;
         countMenu();
-        this.initEventListener();
+        initEventListener();
     }
 
     const countMenu = () => {
@@ -91,7 +109,6 @@ function App() {
         const menuName = $("#menu-name").value;
         this.menu[this.currentCategory].push({ name: menuName });
         store.setLocalStorage(this.menu);
-        countMenu();
         render();
         $("#menu-name").value = "";
     }
@@ -117,6 +134,8 @@ function App() {
     const soldOutMenuName = (e) => {
         const menuId = e.target.closest("li").dataset.menuId;
         this.menu[this.currentCategory][menuId].soldOut = !this.menu[this.currentCategory][menuId].soldOut;
+        console.log(this.menu[this.currentCategory])
+        console.log(this.menu[this.currentCategory][menuId])
         store.setLocalStorage(this.menu);
         render();
     }
