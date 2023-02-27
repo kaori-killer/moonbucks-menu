@@ -29,7 +29,7 @@
 
 // TODO 서버 요청 부분
 // - [x] 웹 서버를 띄운다.
-// - [ ] 서버에 새로운 메뉴가 추가될 수 있게 요청한다.
+// - [x] 서버에 새로운 메뉴가 추가될 수 있게 요청한다.
 // - [ ] 중복되는 메뉴가 추가되지 않게 한다.
 // - [ ] 카테고리별 메뉴 리스트 불러온다.
 // - [ ] 서버에 메뉴가 수정하기 될 수 있게 요청한다.
@@ -107,10 +107,22 @@ function App() {
             return;
         }
         const menuName = $("#menu-name").value;
-        this.menu[this.currentCategory].push({ name: menuName });
-        store.setLocalStorage(this.menu);
-        render();
-        $("#menu-name").value = "";
+        fetch(`${BASE_URL}/category/${this.currentCategory}/menu`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ name: menuName }),
+        }).then((response => {
+            return response.json();
+        }))
+        .then((data) => {
+            console.log(data);
+        });
+        // this.menu[this.currentCategory].push({ name: menuName });
+        // store.setLocalStorage(this.menu);
+        // render();
+        // $("#menu-name").value = "";
     }
 
     const editMenuName = (e) => {
