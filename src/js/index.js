@@ -39,7 +39,7 @@
 // 리펙터링 부분
 // - [x] localStorage에 저장하는 로직은 지운다.
 // - [x] fetch 비동기 api를 사용하는 부분을 async await을 사용하여 구현한다.
-//   - [ ] API 통신이 실패하는 경우에 대해 사용자가 알 수 있게 [alert](https://developer.mozilla.org/ko/docs/Web/API/Window/alert)으로 예외처리를 진행한다.
+//   - [x] API 통신이 실패하는 경우에 대해 사용자가 알 수 있게 [alert](https://developer.mozilla.org/ko/docs/Web/API/Window/alert)으로 예외처리를 진행한다.
 
 import { $ } from "./utils.js/dom.js";
 import MenuApi from "./api/index.js";
@@ -110,6 +110,14 @@ function App() {
             alert("값을 입력해주세요");
             return;
         }
+
+        const duplicatedItem = this.menu[this.currentCategory].find(menuItem => menuItem.name === $("#menu-name").value);
+        if(duplicatedItem) {
+            alert("이미 등록된 메뉴입니다. 다시 입력해주세요.");
+            $("#menu-name").value = "";
+            return;
+        }
+
         const menuName = $("#menu-name").value;
         await MenuApi.createMenu(this.currentCategory, menuName);
         render();
@@ -120,6 +128,18 @@ function App() {
         const menuId = e.target.closest("li").dataset.menuId;
         const $menuName = e.target.closest("li").querySelector(".menu-name");
         const newMenuName = prompt("메뉴명을 수정하세요",  $menuName.innerText);
+        if(!newMenuName) {
+            alert("값을 입력해주세요");
+            return;
+        }
+
+        const duplicatedItem = this.menu[this.currentCategory].find(menuItem => menuItem.name === newMenuName && menuItem.id !== menuId);
+        if(duplicatedItem) {
+            alert("이미 등록된 메뉴입니다. 다시 입력해주세요.");
+            $("#menu-name").value = "";
+            return;
+        }
+
         await MenuApi.editMenu(this.currentCategory, newMenuName, menuId);
         render();
     };
